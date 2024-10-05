@@ -1,41 +1,44 @@
-# Import the necessary libraries
 import streamlit as st
 import pickle
 import numpy as np
 
-# Load the saved model using pickle
+# Load the saved model and encoders
 with open('car_price_model.pkl', 'rb') as file:
     model = pickle.load(file)
 
-# Title of the app
+with open('le_brand.pkl', 'rb') as file:
+    le_brand = pickle.load(file)
+
+with open('le_model.pkl', 'rb') as file:
+    le_model = pickle.load(file)
+
+with open('le_fuel_type.pkl', 'rb') as file:
+    le_fuel_type = pickle.load(file)
+
+with open('le_transmission.pkl', 'rb') as file:
+    le_transmission = pickle.load(file)
+
 st.title("Car Price Estimator")
+st.image("https://miro.medium.com/v2/resize:fit:1200/0*Y7SWB-YvdAfsAUYZ.png")
 
-# Input fields for the car features
-year = st.number_input("Year of the Car", 1990, 2024, step=1)
-mileage = st.number_input("Mileage of the Car (in KM)", 0, 500000, step=500)
-make = st.selectbox("Make of the Car", ["BMW", "Mercedes-Benz", "Toyota", "Honda", "Ford"])
+# Collect user input
+brand_input = st.selectbox("Select Brand", le_brand.classes_)
+model_input = st.selectbox("Select Model", le_model.classes_)
+car_age_input = st.number_input("Enter Car Age (years)", min_value=0, max_value=30, value=5)
+milage_input = st.number_input("Enter Mileage (Miles)", min_value=0, max_value=500000, value=50000)
+fuel_type_input = st.selectbox("Select Fuel Type", le_fuel_type.classes_)
+transmission_input = st.selectbox("Select Transmission Type", le_transmission.classes_)
 
-# Convert the car's year to age
-car_age = 2024 - year
+# Encode user input
+brand_encoded = le_brand.transform([brand_input])[0]
+model_encoded = le_model.transform([model_input])[0]
+fuel_type_encoded = le_fuel_type.transform([fuel_type_input])[0]
+transmission_encoded = le_transmission.transform([transmission_input])[0]
 
-# Process user input to match model's expectations
-# One-hot encoding example for 'Make' (assuming 'BMW', 'Mercedes-Benz', etc. were in the original model)
-make_mapping = {
-    "BMW": [1, 0, 0, 0, 0],
-    "Mercedes-Benz": [0, 1, 0, 0, 0],
-    "Toyota": [0, 0, 1, 0, 0],
-    "Honda": [0, 0, 0, 1, 0],
-    "Ford": [0, 0, 0, 0, 1],
-}
+# Prepare the feature array
+features = np.array([[car_age_input, milage_input, brand_encoded, model_encoded, fuel_type_encoded, transmission_encoded]])
 
-# Button to trigger prediction
-if st.button("Estimate Car Price"):
-    # Prepare the feature vector (age, mileage, make encoding)
-    features = [car_age, mileage] + make_mapping[make]
-    features = np.array(features).reshape(1, -1)
-    
-    # Use the loaded model to make a prediction
+# Predict the price
+if st.button("Estimate Car Price in USD"):
     predicted_price = model.predict(features)
-    
-    # Display the predicted price
     st.write(f"Estimated Car Price: ${predicted_price[0]:,.2f}")
