@@ -22,3 +22,29 @@ Scikit-learn: Machine learning library used to implement the Random Forest Regre
 Pandas & NumPy: Libraries used for data manipulation and numerical computations.
 Streamlit: Used for creating the interactive web app.
 Pickle: Used for saving and loading the trained machine learning model.
+
+**Run the Project**
+First, you can clone the repository to your local machine:
+
+Install the mandetory packages
+Navigate to the project directory and install the required Python packages using pip. Make sure you have Python installed:
+Packages are:
+
+streamlit
+scikit-learn
+pandas
+numpy
+
+Now You can Run the Streamlit Web App
+Run the Streamlit app to interact with the car price prediction model:
+streamlit run app.py
+
+Once the app is running, input the following details:
+
+Brand
+Model
+Car Age
+Mileage (in Miles)
+Fuel Type
+Transmission Type
+The model will use this data to predict the car's price.
