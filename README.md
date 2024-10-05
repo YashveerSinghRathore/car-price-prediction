@@ -1,6 +1,8 @@
 **Car Price Prediction Model**
 This project is a machine learning-based car price prediction system. It uses several car-related features such as brand, model, car age, mileage, fuel type, and transmission to predict the car's price. The model was trained using historical car price data and implemented in an interactive web app using Streamlit.
 
+The trained machine learning model can be downloaded [here]([https://drive.google.com/your-shared-link](https://drive.google.com/file/d/1QZFHMC9RUrJzIa7RoOyM1njMM8prV7jr/view?usp=sharing)).
+
 **Project Overview**
 The Car Price Prediction Model is designed to estimate the price of a used car based on several key attributes. This project consists of two main parts:
 
